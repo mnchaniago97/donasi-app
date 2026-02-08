@@ -38,7 +38,7 @@ class DonationController extends Controller
             'amount' => 'required|numeric|min:10000',
             'campaign_title' => 'nullable|string|max:255',
             'message' => 'nullable|string|max:1000',
-            'payment_method' => 'required|in:qris,bank_transfer',
+            'payment_method' => 'required|in:qris,bank_transfer,dana,gopay',
         ]);
 
         $donation = Donation::create($validated);

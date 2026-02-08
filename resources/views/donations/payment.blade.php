@@ -169,29 +169,38 @@
                                 @elseif($donation->payment_method === 'dana')
                                     {{-- Dana Payment --}}
                                     <div class="space-y-5">
-                                        @foreach($bankAccounts as $account)
-                                            @if($account->dana_account)
-                                            <div class="border-2 border-gray-300 rounded-lg p-5 lg:p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
-                                                <div class="flex items-center gap-3 mb-4">
-                                                    <i class="fas fa-wallet text-2xl" style="color: #3cbaff;"></i>
-                                                    <div>
-                                                        <p class="font-bold text-gray-800">Dana Wallet</p>
-                                                        <p class="text-sm text-gray-600">{{ $account->account_holder_name }}</p>
+                                        @php $hasDana = $bankAccounts->where('dana_account', '!=', null)->count() > 0; @endphp
+                                        
+                                        @if($hasDana)
+                                            @foreach($bankAccounts as $account)
+                                                @if($account->dana_account)
+                                                <div class="border-2 border-gray-300 rounded-lg p-5 lg:p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
+                                                    <div class="flex items-center gap-3 mb-4">
+                                                        <i class="fas fa-wallet text-2xl" style="color: #3cbaff;"></i>
+                                                        <div>
+                                                            <p class="font-bold text-gray-800">Dana Wallet</p>
+                                                            <p class="text-sm text-gray-600">{{ $account->account_holder_name }}</p>
+                                                        </div>
                                                     </div>
+                                                    <div class="bg-gray-50 rounded-lg p-4">
+                                                        <p class="text-xs text-gray-600 mb-2">Nomor Dana:</p>
+                                                        <p class="font-mono font-bold text-lg text-gray-800">{{ $account->dana_account }}</p>
+                                                    </div>
+                                                    <button type="button" class="copy-account w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition" data-account="{{ $account->dana_account }}">
+                                                        <i class="fas fa-copy"></i> Salin Nomor Dana
+                                                    </button>
                                                 </div>
-                                                <div class="bg-gray-50 rounded-lg p-4">
-                                                    <p class="text-xs text-gray-600 mb-2">Nomor Dana:</p>
-                                                    <p class="font-mono font-bold text-lg text-gray-800">{{ $account->dana_account }}</p>
-                                                </div>
-                                                <button type="button" class="copy-account w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition" data-account="{{ $account->dana_account }}">
-                                                    <i class="fas fa-copy"></i> Salin Nomor Dana
-                                                </button>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            <div class="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-5 lg:p-6">
+                                                <p class="text-sm lg:text-base text-yellow-800"><i class="fas fa-exclamation-circle"></i> Dana account belum tersedia. Hubungi admin.</p>
                                             </div>
-                                            @endif
-                                        @endforeach
+                                        @endif
                                     </div>
 
                                     {{-- Dana Instructions --}}
+                                    @if($hasDana)
                                     <div style="background-color: #f9fafb;" class="rounded-lg p-5 lg:p-6 border border-gray-300">
                                         <h5 class="font-bold text-gray-800 mb-4 text-base">
                                             <i class="fas fa-list-check" style="color: #0b5b80;"></i> Cara Kirim via Dana
@@ -219,32 +228,42 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @endif
                                 @elseif($donation->payment_method === 'gopay')
                                     {{-- GoPay Payment --}}
                                     <div class="space-y-5">
-                                        @foreach($bankAccounts as $account)
-                                            @if($account->gopay_account)
-                                            <div class="border-2 border-gray-300 rounded-lg p-5 lg:p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
-                                                <div class="flex items-center gap-3 mb-4">
-                                                    <i class="fas fa-mobile-alt text-2xl" style="color: #00b050;"></i>
-                                                    <div>
-                                                        <p class="font-bold text-gray-800">GoPay</p>
-                                                        <p class="text-sm text-gray-600">{{ $account->account_holder_name }}</p>
+                                        @php $hasGopay = $bankAccounts->where('gopay_account', '!=', null)->count() > 0; @endphp
+                                        
+                                        @if($hasGopay)
+                                            @foreach($bankAccounts as $account)
+                                                @if($account->gopay_account)
+                                                <div class="border-2 border-gray-300 rounded-lg p-5 lg:p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
+                                                    <div class="flex items-center gap-3 mb-4">
+                                                        <i class="fas fa-mobile-alt text-2xl" style="color: #00b050;"></i>
+                                                        <div>
+                                                            <p class="font-bold text-gray-800">GoPay</p>
+                                                            <p class="text-sm text-gray-600">{{ $account->account_holder_name }}</p>
+                                                        </div>
                                                     </div>
+                                                    <div class="bg-gray-50 rounded-lg p-4">
+                                                        <p class="text-xs text-gray-600 mb-2">Nomor GoPay:</p>
+                                                        <p class="font-mono font-bold text-lg text-gray-800">{{ $account->gopay_account }}</p>
+                                                    </div>
+                                                    <button type="button" class="copy-account w-full mt-4 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition" data-account="{{ $account->gopay_account }}">
+                                                        <i class="fas fa-copy"></i> Salin Nomor GoPay
+                                                    </button>
                                                 </div>
-                                                <div class="bg-gray-50 rounded-lg p-4">
-                                                    <p class="text-xs text-gray-600 mb-2">Nomor GoPay:</p>
-                                                    <p class="font-mono font-bold text-lg text-gray-800">{{ $account->gopay_account }}</p>
-                                                </div>
-                                                <button type="button" class="copy-account w-full mt-4 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition" data-account="{{ $account->gopay_account }}">
-                                                    <i class="fas fa-copy"></i> Salin Nomor GoPay
-                                                </button>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            <div class="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-5 lg:p-6">
+                                                <p class="text-sm lg:text-base text-yellow-800"><i class="fas fa-exclamation-circle"></i> GoPay account belum tersedia. Hubungi admin.</p>
                                             </div>
-                                            @endif
-                                        @endforeach
+                                        @endif
                                     </div>
 
                                     {{-- GoPay Instructions --}}
+                                    @if($hasGopay)
                                     <div style="background-color: #f9fafb;" class="rounded-lg p-5 lg:p-6 border border-gray-300">
                                         <h5 class="font-bold text-gray-800 mb-4 text-base">
                                             <i class="fas fa-list-check" style="color: #0b5b80;"></i> Cara Pembayaran GoPay
@@ -272,6 +291,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @endif
                                 @endif
 
                                 {{-- Informasi Penting --}}
