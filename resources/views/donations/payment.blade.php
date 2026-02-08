@@ -90,81 +90,189 @@
                                     <p style="color: #0b5b80;" class="text-4xl lg:text-5xl font-bold">Rp {{ number_format($donation->amount, 0, ',', '.') }}</p>
                                 </div>
 
-                                {{-- Bank Accounts --}}
-                                <div class="space-y-5">
-                                    @foreach($bankAccounts as $account)
-                                        <div class="border-2 border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow">
-                                            {{-- Bank Header --}}
-                                            <div style="background-color: #0b5b80;" class="px-5 py-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-                                                <div class="text-white">
-                                                    <p class="font-bold text-base">{{ $account->bank_name }}</p>
-                                                    <p class="text-sm opacity-90">{{ $account->account_holder_name }}</p>
+                                @if($donation->payment_method === 'bank_transfer')
+                                    {{-- Bank Transfer --}}
+                                    <div class="space-y-5">
+                                        @foreach($bankAccounts as $account)
+                                            <div class="border-2 border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow">
+                                                {{-- Bank Header --}}
+                                                <div style="background-color: #0b5b80;" class="px-5 py-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                                                    <div class="text-white">
+                                                        <p class="font-bold text-base">{{ $account->bank_name }}</p>
+                                                        <p class="text-sm opacity-90">{{ $account->account_holder_name }}</p>
+                                                    </div>
+                                                    <button type="button" class="copy-account bg-white text-gray-800 px-4 py-2 rounded font-medium hover:bg-gray-100 transition-colors text-sm whitespace-nowrap" data-account="{{ $account->account_number }}">
+                                                        <i class="fas fa-copy"></i> Salin
+                                                    </button>
                                                 </div>
-                                                <button type="button" class="copy-account bg-white text-gray-800 px-4 py-2 rounded font-medium hover:bg-gray-100 transition-colors text-sm whitespace-nowrap">
-                                                    <i class="fas fa-copy"></i> Salin
-                                                </button>
+
+                                                {{-- Account Details --}}
+                                                <div class="p-5 space-y-4">
+                                                    <div>
+                                                        <p class="text-xs text-gray-600 mb-2 font-medium">Nomor Rekening</p>
+                                                        <p class="font-mono font-bold text-xl text-gray-800 break-all">{{ $account->account_number }}</p>
+                                                    </div>
+
+                                                    <div>
+                                                        <p class="text-xs text-gray-600 mb-2 font-medium">Atas Nama</p>
+                                                        <p class="font-medium text-gray-800">{{ $account->account_holder_name }}</p>
+                                                    </div>
+
+                                                    {{-- QRIS Alternative --}}
+                                                    @if($account->qris_merchant_file)
+                                                    <div class="border-t pt-4">
+                                                        <p class="text-xs text-gray-600 mb-3 text-center font-medium"><i class="fas fa-qrcode" style="color: #0b5b80;"></i> Atau Scan QRIS</p>
+                                                        <img src="{{ asset('storage/' . $account->qris_merchant_file) }}" alt="QRIS Merchant" class="w-32 h-32 mx-auto rounded-lg shadow-sm">
+                                                    </div>
+                                                    @endif
+
+                                                    @if($account->description)
+                                                    <div class="text-sm text-gray-600 border-t pt-4">{{ $account->description }}</div>
+                                                    @endif
+                                                </div>
                                             </div>
+                                        @endforeach
+                                    </div>
 
-                                            {{-- Account Details --}}
-                                            <div class="p-5 space-y-4">
-                                                <div>
-                                                    <p class="text-xs text-gray-600 mb-2 font-medium">Nomor Rekening</p>
-                                                    <p class="font-mono font-bold text-xl text-gray-800 break-all">{{ $account->account_number }}</p>
-                                                </div>
-
-                                                <div>
-                                                    <p class="text-xs text-gray-600 mb-2 font-medium">Atas Nama</p>
-                                                    <p class="font-medium text-gray-800">{{ $account->account_holder_name }}</p>
-                                                </div>
-
-                                                {{-- QRIS Alternative --}}
-                                                @if($account->qris_merchant_file)
-                                                <div class="border-t pt-4">
-                                                    <p class="text-xs text-gray-600 mb-3 text-center font-medium"><i class="fas fa-qrcode" style="color: #0b5b80;"></i> Atau Scan QRIS</p>
-                                                    <img src="{{ asset('storage/' . $account->qris_merchant_file) }}" alt="QRIS Merchant" class="w-32 h-32 mx-auto rounded-lg shadow-sm">
-                                                </div>
-                                                @endif
-
-                                                @if($account->description)
-                                                <div class="text-sm text-gray-600 border-t pt-4">{{ $account->description }}</div>
-                                                @endif
+                                    {{-- Instruksi Pembayaran --}}
+                                    <div style="background-color: #f9fafb;" class="rounded-lg p-5 lg:p-6 border border-gray-300">
+                                        <h5 class="font-bold text-gray-800 mb-4 text-base">
+                                            <i class="fas fa-list-check" style="color: #0b5b80;"></i> Cara Transfer
+                                        </h5>
+                                        <div class="space-y-3 text-sm lg:text-base text-gray-700">
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">1.</span>
+                                                <span>Buka aplikasi mobile banking atau ATM pilihan Anda</span>
                                             </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-
-                                {{-- Instruksi Pembayaran --}}
-                                <div style="background-color: #f9fafb;" class="rounded-lg p-5 lg:p-6 border border-gray-300">
-                                    <h5 class="font-bold text-gray-800 mb-4 text-base">
-                                        <i class="fas fa-list-check" style="color: #0b5b80;"></i> Cara Transfer
-                                    </h5>
-                                    <div class="space-y-3 text-sm lg:text-base text-gray-700">
-                                        <div class="flex gap-3">
-                                            <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">1.</span>
-                                            <span>Buka aplikasi mobile banking atau ATM pilihan Anda</span>
-                                        </div>
-                                        <div class="flex gap-3">
-                                            <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">2.</span>
-                                            <span>Pilih opsi "Transfer ke Bank Lain"</span>
-                                        </div>
-                                        <div class="flex gap-3">
-                                            <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">3.</span>
-                                            <span>Masukkan nomor rekening dan nama penerima sesuai di atas</span>
-                                        </div>
-                                        <div class="flex gap-3">
-                                            <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">4.</span>
-                                            <span>Masukkan jumlah: <strong>Rp {{ number_format($donation->amount, 0, ',', '.') }}</strong></span>
-                                        </div>
-                                        <div class="flex gap-3">
-                                            <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">5.</span>
-                                            <span>Konfirmasi dan masukkan PIN atau OTP dari bank Anda</span>
-                                        </div>
-                                        <div class="flex gap-3">
-                                            <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">6.</span>
-                                            <span>Transfer selesai dan tunggu notifikasi dari kami</span>
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">2.</span>
+                                                <span>Pilih opsi "Transfer ke Bank Lain"</span>
+                                            </div>
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">3.</span>
+                                                <span>Masukkan nomor rekening dan nama penerima sesuai di atas</span>
+                                            </div>
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">4.</span>
+                                                <span>Masukkan jumlah: <strong>Rp {{ number_format($donation->amount, 0, ',', '.') }}</strong></span>
+                                            </div>
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">5.</span>
+                                                <span>Konfirmasi dan masukkan PIN atau OTP dari bank Anda</span>
+                                            </div>
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">6.</span>
+                                                <span>Transfer selesai dan tunggu notifikasi dari kami</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                @elseif($donation->payment_method === 'dana')
+                                    {{-- Dana Payment --}}
+                                    <div class="space-y-5">
+                                        @foreach($bankAccounts as $account)
+                                            @if($account->dana_account)
+                                            <div class="border-2 border-gray-300 rounded-lg p-5 lg:p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
+                                                <div class="flex items-center gap-3 mb-4">
+                                                    <i class="fas fa-wallet text-2xl" style="color: #3cbaff;"></i>
+                                                    <div>
+                                                        <p class="font-bold text-gray-800">Dana Wallet</p>
+                                                        <p class="text-sm text-gray-600">{{ $account->account_holder_name }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="bg-gray-50 rounded-lg p-4">
+                                                    <p class="text-xs text-gray-600 mb-2">Nomor Dana:</p>
+                                                    <p class="font-mono font-bold text-lg text-gray-800">{{ $account->dana_account }}</p>
+                                                </div>
+                                                <button type="button" class="copy-account w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition" data-account="{{ $account->dana_account }}">
+                                                    <i class="fas fa-copy"></i> Salin Nomor Dana
+                                                </button>
+                                            </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+
+                                    {{-- Dana Instructions --}}
+                                    <div style="background-color: #f9fafb;" class="rounded-lg p-5 lg:p-6 border border-gray-300">
+                                        <h5 class="font-bold text-gray-800 mb-4 text-base">
+                                            <i class="fas fa-list-check" style="color: #0b5b80;"></i> Cara Kirim via Dana
+                                        </h5>
+                                        <div class="space-y-3 text-sm lg:text-base text-gray-700">
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">1.</span>
+                                                <span>Buka aplikasi Dana</span>
+                                            </div>
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">2.</span>
+                                                <span>Pilih opsi "Kirim Uang"</span>
+                                            </div>
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">3.</span>
+                                                <span>Masukkan nomor Dana penerima di atas</span>
+                                            </div>
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">4.</span>
+                                                <span>Input nominal: <strong>Rp {{ number_format($donation->amount, 0, ',', '.') }}</strong></span>
+                                            </div>
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">5.</span>
+                                                <span>Konfirmasi dan selesaikan pembayaran</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @elseif($donation->payment_method === 'gopay')
+                                    {{-- GoPay Payment --}}
+                                    <div class="space-y-5">
+                                        @foreach($bankAccounts as $account)
+                                            @if($account->gopay_account)
+                                            <div class="border-2 border-gray-300 rounded-lg p-5 lg:p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
+                                                <div class="flex items-center gap-3 mb-4">
+                                                    <i class="fas fa-mobile-alt text-2xl" style="color: #00b050;"></i>
+                                                    <div>
+                                                        <p class="font-bold text-gray-800">GoPay</p>
+                                                        <p class="text-sm text-gray-600">{{ $account->account_holder_name }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="bg-gray-50 rounded-lg p-4">
+                                                    <p class="text-xs text-gray-600 mb-2">Nomor GoPay:</p>
+                                                    <p class="font-mono font-bold text-lg text-gray-800">{{ $account->gopay_account }}</p>
+                                                </div>
+                                                <button type="button" class="copy-account w-full mt-4 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition" data-account="{{ $account->gopay_account }}">
+                                                    <i class="fas fa-copy"></i> Salin Nomor GoPay
+                                                </button>
+                                            </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+
+                                    {{-- GoPay Instructions --}}
+                                    <div style="background-color: #f9fafb;" class="rounded-lg p-5 lg:p-6 border border-gray-300">
+                                        <h5 class="font-bold text-gray-800 mb-4 text-base">
+                                            <i class="fas fa-list-check" style="color: #0b5b80;"></i> Cara Pembayaran GoPay
+                                        </h5>
+                                        <div class="space-y-3 text-sm lg:text-base text-gray-700">
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">1.</span>
+                                                <span>Buka aplikasi GoPay (Gojek/Google Pay)</span>
+                                            </div>
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">2.</span>
+                                                <span>Pilih opsi "Kirim Uang" atau "Send Money"</span>
+                                            </div>
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">3.</span>
+                                                <span>Masukkan nomor GoPay penerima di atas</span>
+                                            </div>
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">4.</span>
+                                                <span>Input nominal: <strong>Rp {{ number_format($donation->amount, 0, ',', '.') }}</strong></span>
+                                            </div>
+                                            <div class="flex gap-3">
+                                                <span class="flex-shrink-0 font-bold w-6 text-center" style="color: #0b5b80;">5.</span>
+                                                <span>Konfirmasi dengan PIN/Biometrik</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
 
                                 {{-- Informasi Penting --}}
                                 <div class="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 lg:p-6">

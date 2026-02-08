@@ -12,6 +12,8 @@ class BankAccount extends Model
         'account_holder_name',
         'description',
         'qris_merchant_file',
+        'dana_account',
+        'gopay_account',
         'is_active',
     ];
 

@@ -143,6 +143,30 @@
                     @error('qris_merchant_file')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                 </div>
 
+                <!-- Dana Account -->
+                <div>
+                    <label for="dana_account" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nomor Dana (Opsional)
+                    </label>
+                    <div class="flex items-center">
+                        <span class="text-gray-500 mr-2"><i class="fas fa-wallet"></i></span>
+                        <input type="text" name="dana_account" id="dana_account" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('dana_account') border-red-500 @enderror" placeholder="08xx xxxx xxxx atau email Dana" value="{{ old('dana_account') }}">
+                    </div>
+                    @error('dana_account')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+                </div>
+
+                <!-- GoPay Account -->
+                <div>
+                    <label for="gopay_account" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nomor GoPay (Opsional)
+                    </label>
+                    <div class="flex items-center">
+                        <span class="text-gray-500 mr-2"><i class="fas fa-mobile-alt"></i></span>
+                        <input type="text" name="gopay_account" id="gopay_account" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('gopay_account') border-red-500 @enderror" placeholder="08xx xxxx xxxx atau email GoPay" value="{{ old('gopay_account') }}">
+                    </div>
+                    @error('gopay_account')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+                </div>
+
                 <!-- Description -->
                 <div>
                     <label for="description" class="block text-sm font-medium text-gray-700 mb-2">

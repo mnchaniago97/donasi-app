@@ -36,6 +36,8 @@ class BankAccountController extends Controller
             'account_holder_name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'qris_merchant_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'dana_account' => 'nullable|string|max:255',
+            'gopay_account' => 'nullable|string|max:255',
             'is_active' => 'boolean',
         ]);
 
@@ -71,6 +73,8 @@ class BankAccountController extends Controller
             'account_holder_name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'qris_merchant_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'dana_account' => 'nullable|string|max:255',
+            'gopay_account' => 'nullable|string|max:255',
             'is_active' => 'boolean',
         ]);
 

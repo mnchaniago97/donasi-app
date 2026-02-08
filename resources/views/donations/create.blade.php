@@ -93,6 +93,22 @@
                                 <p class="text-sm text-gray-600">Transfer langsung ke rekening kami</p>
                             </div>
                         </label>
+
+                        <label class="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition" for="payment_dana">
+                            <input type="radio" name="payment_method" id="payment_dana" value="dana" style="accent-color: #0b5b80;" class="w-5 h-5 rounded" required>
+                            <div class="ml-4">
+                                <span class="font-medium text-gray-800"><i class="fas fa-wallet"></i> Dana</span>
+                                <p class="text-sm text-gray-600">Kirim melalui aplikasi Dana</p>
+                            </div>
+                        </label>
+
+                        <label class="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition" for="payment_gopay">
+                            <input type="radio" name="payment_method" id="payment_gopay" value="gopay" style="accent-color: #0b5b80;" class="w-5 h-5 rounded" required>
+                            <div class="ml-4">
+                                <span class="font-medium text-gray-800"><i class="fas fa-mobile-alt"></i> GoPay</span>
+                                <p class="text-sm text-gray-600">Bayar dengan GoPay</p>
+                            </div>
+                        </label>
                     </div>
                     @error('payment_method')<p class="text-red-500 text-sm mt-2">{{ $message }}</p>@enderror
                 </div>
