@@ -23,6 +23,7 @@
                 <!-- Menu -->
                 <div class="hidden md:flex gap-6">
                     <a href="/" style="color: inherit;" class="hover:opacity-70 transition">Beranda</a>
+                    <a href="{{ route('campaigns.index') }}" style="color: inherit;" class="hover:opacity-70 transition">Campaign</a>
                     <a href="{{ route('donations.create') }}" style="color: inherit;" class="hover:opacity-70 transition">Donasi</a>
                     <a href="{{ route('donations.listSuccess') }}" style="color: inherit;" class="hover:opacity-70 transition">Daftar Donasi</a>
                     @auth
@@ -56,6 +57,7 @@
             <!-- Mobile Menu -->
             <div id="mobile-menu" class="md:hidden hidden pb-4 space-y-2">
                 <a href="/" style="color: inherit;" class="block hover:opacity-70 transition py-2">Beranda</a>
+                <a href="{{ route('campaigns.index') }}" style="color: inherit;" class="block hover:opacity-70 transition py-2">Campaign</a>
                 <a href="{{ route('donations.create') }}" style="color: inherit;" class="block hover:opacity-70 transition py-2">Donasi</a>
                 <a href="{{ route('donations.listSuccess') }}" style="color: inherit;" class="block hover:opacity-70 transition py-2">Daftar Donasi</a>
                 @auth
@@ -90,6 +92,7 @@
                     <h4 class="font-bold text-white mb-4">Menu</h4>
                     <ul class="text-sm space-y-2">
                         <li><a href="/" class="hover:text-white">Beranda</a></li>
+                        <li><a href="{{ route('campaigns.index') }}" class="hover:text-white">Campaign</a></li>
                         <li><a href="{{ route('donations.create') }}" class="hover:text-white">Berdonasi</a></li>
                         <li><a href="{{ route('donations.listSuccess') }}" class="hover:text-white">Daftar Donasi</a></li>
                     </ul>

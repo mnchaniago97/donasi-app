@@ -57,6 +57,86 @@
     </div>
 </section>
 
+<!-- Campaign Section -->
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-800 mb-4">Campaign Yang Membutuhkan Dukungan Anda</h2>
+            <p class="text-gray-600 text-lg">Lihat campaign-campaign penting yang sedang berjalan dan ambil bagian dalam perubahan positif</p>
+        </div>
+
+        @php
+            $campaigns = \App\Models\Campaign::where('status', 'active')->orderBy('created_at', 'desc')->take(3)->get();
+        @endphp
+
+        @if($campaigns->count() > 0)
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                @foreach($campaigns as $campaign)
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                        <div class="relative h-48 bg-gradient-to-r from-teal-600 to-teal-700 overflow-hidden">
+                            @if($campaign->image)
+                                <img src="{{ asset('storage/' . $campaign->image) }}" alt="{{ $campaign->title }}" class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center">
+                                    <i class="fas fa-image text-white text-5xl opacity-50"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2 line-clamp-2">{{ $campaign->title }}</h3>
+                            <p class="text-gray-600 text-sm mb-3 line-clamp-2">{{ $campaign->description }}</p>
+
+                            <div class="mb-3">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-sm font-semibold text-teal-700">
+                                        Rp {{ number_format($campaign->current_amount, 0, ',', '.') }}
+                                    </span>
+                                    <span class="text-sm text-gray-500">{{ round($campaign->getProgressPercentage()) }}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div 
+                                        class="bg-teal-600 h-2 rounded-full transition-all duration-300"
+                                        style="width: {{ $campaign->getProgressPercentage() }}%"
+                                    ></div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">
+                                    Target: Rp {{ number_format($campaign->target_amount, 0, ',', '.') }}
+                                </p>
+                            </div>
+
+                            <div class="flex justify-between items-center text-sm text-gray-600 mb-4 pb-4 border-b">
+                                <span><i class="fas fa-users text-teal-600 mr-1"></i> {{ $campaign->getDonorCount() }} donatur</span>
+                                @if($campaign->deadline)
+                                    <span><i class="fas fa-clock text-teal-600 mr-1"></i> {{ $campaign->deadline->diffForHumans() }}</span>
+                                @endif
+                            </div>
+
+                            <div class="flex gap-2">
+                                <a href="{{ route('campaigns.show', $campaign) }}" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white py-2 rounded text-center text-sm font-semibold transition">
+                                    Lihat Detail
+                                </a>
+                                <a href="{{ route('donations.create', ['campaign_id' => $campaign->id]) }}" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded text-center text-sm font-semibold transition">
+                                    Donasi
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <div class="text-center">
+                <a href="{{ route('campaigns.index') }}" class="inline-block bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-8 rounded-lg transition">
+                    <i class="fas fa-arrow-right mr-2"></i>Lihat Semua Campaign
+                </a>
+            </div>
+        @else
+            <div class="bg-white rounded-lg shadow-md p-12 text-center">
+                <i class="fas fa-folder-open text-gray-400 text-5xl mb-4"></i>
+                <p class="text-gray-600 text-lg">Belum ada campaign saat ini</p>
+            </div>
+        @endif
+    </div>
+</section>
+
 <!-- Tentang Kami / Profil Organisasi -->
 <section class="py-20 bg-white">
     <div class="container mx-auto px-4">
@@ -148,6 +228,21 @@
             </div>
         </div>
     </div>
+</section>
+
+<!-- Campaign Section -->
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <h2 class="text-4xl font-bold text-center text-gray-800 mb-4">Campaign Terbaru</h2>
+        <p class="text-center text-gray-600 mb-12">Dukung berbagai campaign penting untuk membantu sesama</p>
+        
+        <div class="flex justify-center mb-8">
+            <a href="{{ route('campaigns.index') }}" style="background-color: #0b5b80;" class="hover:opacity-90 text-white font-bold py-3 px-8 rounded-lg transition">
+                <i class="fas fa-list"></i> Lihat Semua Campaign
+            </a>
+        </div>
+    </div>
+</section>
 </section>
 
 <!-- Cara Kerja Section -->

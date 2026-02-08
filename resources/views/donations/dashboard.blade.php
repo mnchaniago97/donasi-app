@@ -48,6 +48,12 @@
                         Kelola Rekening
                     </a>
 
+                    <!-- Kelola Campaign -->
+                    <a href="{{ route('campaigns.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-700 font-medium transition">
+                        <i class="fas fa-flag"></i>
+                        Kelola Campaign
+                    </a>
+
                     <!-- Daftar Donasi -->
                     <a href="{{ route('donations.listSuccess') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-700 font-medium transition">
                         <i class="fas fa-list-alt"></i>
@@ -123,6 +129,16 @@
                 <i class="fas fa-calendar-alt text-4xl text-orange-300"></i>
             </div>
         </div>
+
+        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-blue-100 text-sm mb-1">Campaign Aktif</p>
+                    <p class="text-3xl font-bold">{{ \App\Models\Campaign::where('status', 'active')->count() }}</p>
+                </div>
+                <i class="fas fa-flag text-4xl text-blue-300"></i>
+            </div>
+        </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -178,34 +194,108 @@
                 @endif
             </div>
         </div>
+    </div>
 
-        <!-- Quick Actions -->
-        <div>
-            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-4">Aksi Cepat</h3>
-                <div class="space-y-3">
-                    <a href="{{ route('admin.bank-accounts.index') }}" style="background-color: #0b5b80;" class="block hover:opacity-90 text-white font-bold py-2 px-4 rounded-lg text-center transition">
-                        Kelola Rekening Bank
-                    </a>
-                    <a href="{{ route('donations.listSuccess') }}" class="block bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg text-center transition">
-                        Lihat Semua Donasi
-                    </a>
-                    <a href="{{ route('donations.create') }}" class="block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg text-center transition">
-                        Tambah Donasi Manual
-                    </a>
+    <!-- Campaign Section -->
+    <div class="mt-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Campaign Aktif</h2>
+            <a href="{{ route('campaigns.create') }}" style="background-color: #0b5b80;" class="hover:opacity-90 text-white font-bold py-2 px-4 rounded-lg transition">
+                <i class="fas fa-plus mr-2"></i>Buat Campaign Baru
+            </a>
+        </div>
+
+        @php
+            $activeCampaigns = \App\Models\Campaign::where('status', 'active')->orderBy('created_at', 'desc')->take(6)->get();
+        @endphp
+
+        @if($activeCampaigns->count() > 0)
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach($activeCampaigns as $campaign)
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                        <div class="relative h-40 bg-gradient-to-r from-teal-600 to-teal-700 overflow-hidden">
+                            @if($campaign->image)
+                                <img src="{{ asset('storage/' . $campaign->image) }}" alt="{{ $campaign->title }}" class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center">
+                                    <i class="fas fa-image text-white text-4xl opacity-50"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2 line-clamp-2">{{ $campaign->title }}</h3>
+                            <div class="mb-3">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-sm font-semibold text-teal-700">
+                                        Rp {{ number_format($campaign->current_amount, 0, ',', '.') }}
+                                    </span>
+                                    <span class="text-sm text-gray-500">{{ round($campaign->getProgressPercentage()) }}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div 
+                                        class="bg-teal-600 h-2 rounded-full"
+                                        style="width: {{ $campaign->getProgressPercentage() }}%"
+                                    ></div>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="{{ route('campaigns.show', $campaign) }}" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white py-2 rounded text-center text-sm font-semibold transition">
+                                    Lihat
+                                </a>
+                                <a href="{{ route('campaigns.edit', $campaign) }}" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded text-center text-sm font-semibold transition">
+                                    Edit
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <div class="mt-4 text-center">
+                <a href="{{ route('campaigns.index') }}" class="text-teal-600 hover:text-teal-700 font-semibold">
+                    Lihat Semua Campaign →
+                </a>
+            </div>
+        @else
+            <div class="bg-white rounded-lg shadow-md p-12 text-center">
+                <i class="fas fa-folder-open text-gray-400 text-5xl mb-4"></i>
+                <p class="text-gray-600 text-lg">Belum ada campaign</p>
+                <a href="{{ route('campaigns.create') }}" style="background-color: #0b5b80;" class="inline-block hover:opacity-90 text-white font-bold py-2 px-6 rounded-lg transition mt-4">
+                    <i class="fas fa-plus mr-2"></i>Buat Campaign Pertama
+                </a>
+            </div>
+        @endif
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="mt-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Aksi Cepat</h3>
+                    <div class="space-y-3">
+                        <a href="{{ route('admin.bank-accounts.index') }}" style="background-color: #0b5b80;" class="block hover:opacity-90 text-white font-bold py-2 px-4 rounded-lg text-center transition">
+                            Kelola Rekening Bank
+                        </a>
+                        <a href="{{ route('donations.listSuccess') }}" class="block bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg text-center transition">
+                            Lihat Semua Donasi
+                        </a>
+                        <a href="{{ route('donations.create') }}" class="block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg text-center transition">
+                            Tambah Donasi Manual
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <div style="background: linear-gradient(135deg, #d4e9f5, #f0f9fc); border-color: #a8d4e8;" class="rounded-lg p-6 border">
                 <h3 class="font-bold text-gray-800 mb-3">💡 Tips</h3>
                 <ul class="text-sm text-gray-700 space-y-2">
-                    <li>✓ Selalu update data rekening bank</li>
-                    <li>✓ Monitor donasi secara berkala</li>
-                    <li>✓ Aktifkan notifikasi webhook</li>
-                    <li>✓ Kirim terima kasih kepada donatur</li>
+                    <li>✓ Buat campaign yang menarik</li>
+                    <li>✓ Perbarui campaign secara berkala</li>
+                    <li>✓ Kelola rekening bank dengan baik</li>
+                    <li>✓ Monitor donasi secara real-time</li>
                 </ul>
             </div>
-        </main>
+        </div>
     </div>
 
 <script>

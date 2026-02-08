@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\BankAccountController;
+use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\Auth\AuthController;
 
 // Home
@@ -18,6 +19,22 @@ Route::prefix('auth')->name('auth.')->group(function () {
     
     // Setup admin (hanya untuk development)
     Route::get('/create-admin', [AuthController::class, 'createAdmin'])->name('create-admin');
+});
+
+// Campaign Routes
+Route::prefix('campaign')->name('campaigns.')->group(function () {
+    Route::get('/', [CampaignController::class, 'index'])->name('index');
+    Route::get('/{campaign}', [CampaignController::class, 'show'])->name('show');
+    
+    // Admin only
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/buat/baru', [CampaignController::class, 'create'])->name('create');
+        Route::post('/', [CampaignController::class, 'store'])->name('store');
+        Route::get('/{campaign}/edit', [CampaignController::class, 'edit'])->name('edit');
+        Route::put('/{campaign}', [CampaignController::class, 'update'])->name('update');
+        Route::delete('/{campaign}', [CampaignController::class, 'destroy'])->name('destroy');
+        Route::post('/{campaign}/update', [CampaignController::class, 'storeUpdate'])->name('storeUpdate');
+    });
 });
 
 // Donasi Routes
