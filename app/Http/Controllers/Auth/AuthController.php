@@ -19,6 +19,14 @@ class AuthController extends Controller
     }
 
     /**
+     * Tampilkan register form
+     */
+    public function showRegister()
+    {
+        return view('auth.register');
+    }
+
+    /**
      * Handle login request
      */
     public function login(Request $request)
@@ -37,6 +45,28 @@ class AuthController extends Controller
         return back()->withErrors([
             'email' => 'Kredensial tidak sesuai dengan data kami.',
         ])->onlyInput('email');
+    }
+
+    /**
+     * Handle register request
+     */
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email:rfc,dns|max:255|unique:users,email',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return redirect()
+            ->route('auth.login')
+            ->with('success', 'Registrasi berhasil. Silakan login.');
     }
 
     /**
@@ -83,4 +113,3 @@ class AuthController extends Controller
         ]);
     }
 }
-

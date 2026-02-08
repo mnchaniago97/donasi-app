@@ -116,9 +116,15 @@
                     ← Kembali ke Beranda
                 </a>
             </div>
+            <div class="mt-4 text-center">
+                <a href="{{ route('auth.register') }}" class="text-sm font-medium" style="color: #0b5b80;">
+                    Buat akun admin baru
+                </a>
+            </div>
         </div>
     </div>
 </div>
 
 </body>
 </html>
+
