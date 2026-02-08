@@ -8,7 +8,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 h-screen overflow-hidden">
     <!-- Navigation -->
     <nav style="background: linear-gradient(to right, #0b5b80, #064a66);" class="text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4">
@@ -36,61 +36,17 @@
     </nav>
 
     <!-- Main Layout -->
-    <div class="flex min-h-screen bg-gray-50">
+    <div class="flex h-[calc(100vh-4rem)] bg-gray-50">
         <!-- Mobile Overlay -->
-        <div id="sidebar-overlay" class="fixed inset-0 bg-black/40 z-40 hidden lg:hidden"></div>
+        <div id="sidebar-overlay" class="fixed inset-x-0 top-16 bottom-0 bg-black/40 z-40 hidden lg:hidden"></div>
         <!-- Sidebar -->
-        <aside id="sidebar" class="w-64 bg-white shadow-lg fixed lg:static inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-200">
-            <div class="lg:hidden flex items-center justify-between px-4 py-3 border-b border-gray-100">
-                <span class="font-bold text-gray-800">Menu Admin</span>
-                <button id="sidebar-close" type="button" class="p-2 rounded-md hover:bg-gray-100 transition" aria-label="Tutup menu">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="p-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-6">Menu Admin</h3>
-                <nav class="space-y-2">
-                    <!-- Dashboard -->
-                    <a href="{{ route('admin.dashboard') }}" style="background-color: #0b5b80;" class="text-white font-medium transition flex items-center gap-3 px-4 py-3 rounded-lg">
-                        <i class="fas fa-tachometer-alt"></i>
-                        Dashboard
-                    </a>
-
-                    <!-- Kelola Rekening Bank -->
-                    <a href="{{ route('admin.bank-accounts.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-700 font-medium transition">
-                        <i class="fas fa-university"></i>
-                        Kelola Rekening
-                    </a>
-
-                    <!-- Daftar Donasi -->
-                    <a href="{{ route('donations.listSuccess') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-700 font-medium transition">
-                        <i class="fas fa-list-alt"></i>
-                        Daftar Donasi
-                    </a>
-
-                    <!-- Formulir Donasi -->
-                    <a href="{{ route('donations.create') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-700 font-medium transition">
-                        <i class="fas fa-heart"></i>
-                        Formulir Donasi
-                    </a>
-
-                    <!-- Divider -->
-                    <div class="my-6 border-t border-gray-200"></div>
-
-                    <!-- Logout -->
-                    <form action="{{ route('auth.logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-red-50 text-red-600 font-medium transition">
-                            <i class="fas fa-sign-out-alt"></i>
-                            Logout
-                        </button>
-                    </form>
-                </nav>
-            </div>
+        <aside id="sidebar" class="w-64 bg-white shadow-lg fixed top-16 left-0 z-40 transform -translate-x-full transition-transform duration-200 h-[calc(100vh-4rem)] lg:static lg:h-auto lg:translate-x-0">
+            @include('partials.sidebar')
         </aside>
+        
 
         <!-- Main Content -->
-        <main class="flex-1 px-4 sm:px-6 lg:px-8 py-8 lg:py-12 lg:ml-0">
+        <main class="flex-1 px-4 sm:px-6 lg:px-8 py-8 lg:py-12 lg:ml-0 overflow-y-auto h-[calc(100vh-4rem)]">
             <div class="mb-8">
                 <h1 class="text-3xl font-bold text-gray-800">Dashboard Admin</h1>
                 <p class="text-gray-600">Kelola dan monitor donasi Anda</p>
@@ -247,5 +203,11 @@
 
 </body>
 </html>
+
+
+
+
+
+
 
 
