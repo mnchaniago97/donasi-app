@@ -94,7 +94,7 @@
             <div class="flex justify-between items-center mb-8">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-800">Rekening Bank</h1>
-                    <p class="text-gray-600">Kelola rekening bank untuk penerimaan donasi</p>
+                    
                 </div>
                 <a href="{{ route('admin.bank-accounts.create') }}" style="background-color: #0b5b80;" class="hover:opacity-90 text-white font-bold py-2 px-6 rounded-lg">
                     + Tambah Rekening
