@@ -13,10 +13,15 @@
     <nav style="background: linear-gradient(to right, #0b5b80, #064a66);" class="text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center h-16">
-                <a href="/" class="flex items-center gap-2 font-bold text-xl">
-                    <i class="fas fa-heart text-2xl"></i>
-                    Donasi Online
-                </a>
+                <div class="flex items-center gap-3">
+                    <button id="sidebar-open" type="button" class="lg:hidden p-2 rounded-md hover:bg-white/10 transition" aria-label="Buka menu">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <a href="/" class="flex items-center gap-2 font-bold text-xl">
+                        <i class="fas fa-heart text-2xl"></i>
+                        Donasi Online
+                    </a>
+                </div>
                 <div class="flex items-center gap-4">
                     <span style="color: #b3e0f1;" class="text-sm text-blue-100">👤 {{ Auth::user()->name ?? 'Admin' }}</span>
                     <form action="{{ route('auth.logout') }}" method="POST" class="inline">
@@ -32,8 +37,16 @@
 
     <!-- Main Layout -->
     <div class="flex min-h-screen bg-gray-50">
+        <!-- Mobile Overlay -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black/40 z-40 hidden lg:hidden"></div>
         <!-- Sidebar -->
-        <aside class="w-64 bg-white shadow-lg">
+        <aside id="sidebar" class="w-64 bg-white shadow-lg fixed lg:static inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-200">
+            <div class="lg:hidden flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                <span class="font-bold text-gray-800">Menu Admin</span>
+                <button id="sidebar-close" type="button" class="p-2 rounded-md hover:bg-gray-100 transition" aria-label="Tutup menu">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
             <div class="p-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-6">Menu Admin</h3>
                 <nav class="space-y-2">
@@ -77,7 +90,7 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 px-8 py-12">
+        <main class="flex-1 px-4 sm:px-6 lg:px-8 py-8 lg:py-12 lg:ml-0">
             <div class="flex justify-between items-center mb-8">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-800">Rekening Bank</h1>
@@ -162,6 +175,29 @@
     @endif
         </main>
     </div>
+
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const openBtn = document.getElementById('sidebar-open');
+    const closeBtn = document.getElementById('sidebar-close');
+
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    }
+
+    function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    if (openBtn) openBtn.addEventListener('click', openSidebar);
+    if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    if (overlay) overlay.addEventListener('click', closeSidebar);
+</script>
 
 </body>
 </html>
