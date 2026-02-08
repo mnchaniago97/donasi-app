@@ -3,12 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Donation extends Model
 {
     protected $fillable = [
-        'campaign_id',
         'donor_name',
         'donor_email',
         'donor_phone',
@@ -25,14 +23,6 @@ class Donation extends Model
     protected $casts = [
         'payment_completed_at' => 'datetime',
     ];
-
-    /**
-     * Get the campaign that owns the donation.
-     */
-    public function campaign(): BelongsTo
-    {
-        return $this->belongsTo(Campaign::class);
-    }
 
     public function isSuccess(): bool
     {

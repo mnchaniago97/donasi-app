@@ -11,10 +11,6 @@
 
             <form action="{{ route('donations.store') }}" method="POST" class="space-y-6">
                 @csrf
-                
-                @if($campaignId)
-                    <input type="hidden" name="campaign_id" value="{{ $campaignId }}">
-                @endif
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Nama Donatur -->

@@ -23,8 +23,7 @@ class DonationController extends Controller
     public function create()
     {
         $bankAccounts = BankAccount::active()->get();
-        $campaignId = request()->query('campaign_id');
-        return view('donations.create', compact('bankAccounts', 'campaignId'));
+        return view('donations.create', compact('bankAccounts'));
     }
 
     /**
@@ -33,7 +32,6 @@ class DonationController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'campaign_id' => 'nullable|exists:campaigns,id',
             'donor_name' => 'required|string|max:255',
             'donor_email' => 'required|email',
             'donor_phone' => 'nullable|string|max:20',

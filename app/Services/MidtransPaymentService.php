@@ -131,16 +131,6 @@ class MidtransPaymentService
                     'payment_completed_at' => now(),
                 ]);
 
-                // Update campaign current_amount if campaign_id exists
-                if ($donation->campaign_id) {
-                    $campaign = \App\Models\Campaign::find($donation->campaign_id);
-                    if ($campaign) {
-                        $campaign->update([
-                            'current_amount' => $campaign->current_amount + $donation->amount,
-                        ]);
-                    }
-                }
-
                 // Kirim email bukti pembayaran
                 try {
                     Mail::to($donation->donor_email)->send(new PaymentReceiptMail($donation));
