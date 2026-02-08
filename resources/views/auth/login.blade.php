@@ -98,18 +98,6 @@
                 </div>
             </div>
 
-            <!-- Info Box -->
-            <div style="background-color: #d4e9f5; border-color: #a8d4e8;" class="mt-6 border rounded-lg p-4">
-                <p style="color: #0b5b80;" class="text-sm font-medium mb-2">📝 Akun Demo:</p>
-                <p class="text-xs text-blue-700">
-                    <strong>Email:</strong> admin@donasi.app<br>
-                    <strong>Password:</strong> admin123456
-                </p>
-                <p class="text-xs text-blue-600 mt-3">
-                    💡 <strong>Tip:</strong> Ganti password setelah login pertama kali.
-                </p>
-            </div>
-
             <!-- Back Link -->
             <div class="mt-6 text-center">
                 <a href="/" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
